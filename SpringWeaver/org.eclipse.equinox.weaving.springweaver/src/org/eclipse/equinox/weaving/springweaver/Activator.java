@@ -11,7 +11,8 @@
  *******************************************************************************/
 package org.eclipse.equinox.weaving.springweaver;
 
-import java.util.Properties;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import org.eclipse.equinox.service.weaving.IWeavingServiceFactory;
 import org.osgi.framework.BundleActivator;
@@ -31,13 +32,14 @@ public class Activator implements BundleActivator {
 
 	private ClassFileTransformerRegistry registry;
 
-	private ServiceRegistration serviceRegistration = null;
+	private ServiceRegistration<?> serviceRegistration = null;
 
 	private static Activator instance;
 
 	public Activator() {
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		instance = this;
 
@@ -58,11 +60,12 @@ public class Activator implements BundleActivator {
 		final String serviceName = IWeavingServiceFactory.class.getName();
 		final IWeavingServiceFactory weavingServiceFactory = new WeavingServiceFactory(
 				registry);
-		final Properties props = new Properties();
+		final Dictionary<String, ?> props = new Hashtable<String, Object>();
 		serviceRegistration = context.registerService(serviceName,
 				weavingServiceFactory, props);
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();

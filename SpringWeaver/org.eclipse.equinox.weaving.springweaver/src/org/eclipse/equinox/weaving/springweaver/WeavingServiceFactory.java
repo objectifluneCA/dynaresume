@@ -14,9 +14,8 @@ package org.eclipse.equinox.weaving.springweaver;
 import org.eclipse.equinox.service.weaving.ISupplementerRegistry;
 import org.eclipse.equinox.service.weaving.IWeavingService;
 import org.eclipse.equinox.service.weaving.IWeavingServiceFactory;
-import org.eclipse.osgi.service.resolver.BundleDescription;
-import org.eclipse.osgi.service.resolver.State;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleRevision;
 
 /**
  * The factory to create weavers for ClassFileTransformer components.
@@ -37,9 +36,9 @@ public class WeavingServiceFactory implements IWeavingServiceFactory {
      *      org.eclipse.osgi.service.resolver.BundleDescription,
      *      org.eclipse.equinox.service.weaving.ISupplementerRegistry)
      */
-    public IWeavingService createWeavingService(final ClassLoader loader,
-            final Bundle bundle, final State resolverState,
-            final BundleDescription bundleDesciption,
+    @Override
+	public IWeavingService createWeavingService(final ClassLoader loader,
+            final Bundle bundle, final BundleRevision bundleRevision,
             final ISupplementerRegistry supplementerRegistry) {
         return new WeavingService(bundle, registry);
     }

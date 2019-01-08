@@ -19,7 +19,7 @@ import org.eclipse.equinox.service.weaving.IWeavingServiceFactory;
 import org.osgi.framework.BundleContext;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.instrument.classloading.SimpleThrowawayClassLoader;
-import org.springframework.osgi.context.BundleContextAware;
+import org.eclipse.gemini.blueprint.context.BundleContextAware;
 import org.springframework.util.ClassUtils;
 
 /**

@@ -19,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.equinox.service.weaving.IWeavingService;
-import org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader;
-import org.eclipse.osgi.internal.composite.CompositeClassLoader;
 import org.eclipse.osgi.internal.loader.BundleLoader;
+import org.eclipse.osgi.internal.loader.EquinoxClassLoader;
 import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -46,6 +45,7 @@ public class WeavingService implements IWeavingService {
 	/**
 	 * @see org.eclipse.equinox.service.weaving.IWeavingService#flushGeneratedClasses(java.lang.ClassLoader)
 	 */
+	@Override
 	public void flushGeneratedClasses(final ClassLoader loader) {
 	}
 
@@ -53,6 +53,7 @@ public class WeavingService implements IWeavingService {
 	 * @see org.eclipse.equinox.service.weaving.IWeavingService#generatedClassesExistFor(java.lang.ClassLoader,
 	 *      java.lang.String)
 	 */
+	@Override
 	public boolean generatedClassesExistFor(final ClassLoader loader,
 			final String className) {
 		return false;
@@ -61,6 +62,7 @@ public class WeavingService implements IWeavingService {
 	/**
 	 * @see org.eclipse.equinox.service.weaving.IWeavingService#getGeneratedClassesFor(java.lang.String)
 	 */
+	@Override
 	public Map<String, byte[]> getGeneratedClassesFor(final String className) {
 		return null;
 	}
@@ -68,6 +70,7 @@ public class WeavingService implements IWeavingService {
 	/**
 	 * @see org.eclipse.equinox.service.weaving.IWeavingService#getKey()
 	 */
+	@Override
 	public String getKey() {
 		return "spring";
 	}
@@ -76,6 +79,7 @@ public class WeavingService implements IWeavingService {
 	 * @see org.eclipse.equinox.service.weaving.IWeavingService#preProcess(java.lang.String,
 	 *      byte[], java.lang.ClassLoader)
 	 */
+	@Override
 	public byte[] preProcess(final String name, final byte[] classbytes,
 			final ClassLoader loader) throws IOException {
 
@@ -150,11 +154,8 @@ public class WeavingService implements IWeavingService {
 	 * @return
 	 */
 	private BundleLoader getBundleLoader(ClassLoader loader) {
-		if (loader instanceof DefaultClassLoader) {
-			return (BundleLoader) ((DefaultClassLoader) loader).getDelegate();
-		}
-		if (loader instanceof CompositeClassLoader) {
-			return (BundleLoader) ((CompositeClassLoader) loader).getDelegate();
+		if (loader instanceof EquinoxClassLoader) {
+			return ((EquinoxClassLoader) loader).getBundleLoader();
 		}
 		return null;
 	}
